@@ -1,0 +1,32 @@
+name: "Manual Jenkins Trigger"
+
+# This creates the manual run button in the Actions tab
+on:
+  workflow_dispatch:
+    inputs:
+      PERSON_NAME:
+        description: 'Who to say hello to?'
+        required: true
+        default: 'GitHub Button'
+
+jobs:
+  # This job's only purpose is to call Jenkins
+  trigger-jenkins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Trigger Jenkins Job"
+        # This is a pre-built Action that knows how to talk to Jenkins
+        uses: appleboy/jenkins-action@master
+        with:
+          # Use the secrets we stored in GitHub
+          url: ${{ secrets.JENKINS_URL }}
+          user: ${{ secrets.JENKINS_USER }}
+          token: ${{ secrets.JENKINS_API_TOKEN }}
+          
+          # This is the name of your job in Jenkins
+          job: "Hello-World-Test"
+          
+          # This part passes the text from the GitHub button
+          # directly to your Jenkins job's 'PERSON_NAME' parameter
+          parameters: |
+            PERSON_NAME=${{ github.event.inputs.TEST }}
