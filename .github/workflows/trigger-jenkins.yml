@@ -21,7 +21,7 @@ jobs:
           user: ${{ secrets.JENKINS_USER }}
           token: ${{ secrets.JENKINS_API_TOKEN }}
           
-          job: "Hello-World-Test"
+          job: "githubTest"
           
           parameters: |
             PERSON_NAME=${{ github.event.inputs.TEST }}
